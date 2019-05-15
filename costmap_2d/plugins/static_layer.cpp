@@ -285,6 +285,8 @@ void StaticLayer::updateBounds(double robot_x, double robot_y, double robot_yaw,
   *max_x = std::max(wx, *max_x);
   *max_y = std::max(wy, *max_y);
 
+  ROS_WARN("StaticLayer_bounds[%.1f %.1f] [%.1f %.1f]",*min_x,*min_y,*max_x,*max_y);
+
   has_updated_data_ = false;
 }
 
@@ -295,6 +297,9 @@ void StaticLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, int
 
   if (!enabled_)
     return;
+
+  //fprintf(stderr,"StaticLayer_updateCosts[%d %d] [%d %d]\n",min_i,max_i,min_j,max_j);
+
 
   if (!layered_costmap_->isRolling())
   {
