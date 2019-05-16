@@ -285,7 +285,7 @@ void StaticLayer::updateBounds(double robot_x, double robot_y, double robot_yaw,
   *max_x = std::max(wx, *max_x);
   *max_y = std::max(wy, *max_y);
 
-  ROS_WARN("StaticLayer_bounds[%.1f %.1f] [%.1f %.1f]",*min_x,*min_y,*max_x,*max_y);
+  //ROS_WARN("StaticLayer_bounds[%.1f %.1f] [%.1f %.1f]",*min_x,*min_y,*max_x,*max_y);
 
   has_updated_data_ = false;
 }

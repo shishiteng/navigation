@@ -33,7 +33,6 @@ private:
 
   void reconfigureCB(costmap_2d::GenericPluginConfig &config, uint32_t level);
 
-  bool points_received_;
   bool has_updated_data_;
   ros::Subscriber points_sub_;
   sensor_msgs::PointCloud msg_;

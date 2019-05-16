@@ -1,5 +1,5 @@
 /*********************************************************************
- * Author: shishiteng
+ * Author: shishiteng@126.com
  *********************************************************************/
 #include <costmap_2d/virtual_layer.h>
 #include <costmap_2d/costmap_math.h>
@@ -28,7 +28,7 @@ void VirtualLayer::onInitialize()
 
   
   points_sub_ = g_nh.subscribe("virtualwall_points", 1, &VirtualLayer::incomingPoints, this);
-  points_received_ = false;
+  has_updated_data_ = false;
   
   if (dsrv_)
     delete dsrv_;
@@ -43,6 +43,9 @@ void VirtualLayer::reconfigureCB(costmap_2d::GenericPluginConfig &config, uint32
 {
   if (config.enabled != enabled_)
     enabled_ = config.enabled;
+  
+  if(enabled_)
+    has_updated_data_ = true;
 }
 
 void VirtualLayer::matchSize()
@@ -71,7 +74,7 @@ void VirtualLayer::updateBounds(double robot_x, double robot_y, double robot_yaw
 
 void VirtualLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, int min_j, int max_i, int max_j)
 {
-  if (!points_received_)
+  if (!has_updated_data_)
     return;
 
   if (!enabled_)
@@ -85,14 +88,17 @@ void VirtualLayer::updateCosts(costmap_2d::Costmap2D& master_grid, int min_i, in
       float x = msg_.points[i].x;
       float y = msg_.points[i].y;  
       if(master_grid.worldToMap(x, y, mx, my))
-        master_grid.setCost(mx, my, LETHAL_OBSTACLE);
+        master_grid.setCost(mx, my, LETHAL_OBSTACLE); //INSCRIBED_INFLATED_OBSTACLE LETHAL_OBSTACLE
   }
 }
 
 void VirtualLayer::incomingPoints(const sensor_msgs::PointCloudConstPtr& points_msg)
 {
+    if (!enabled_)
+        return;
+        
     msg_ = *points_msg;
-    points_received_ = true;
+    has_updated_data_ = true;
 }
 
 }  // namespace costmap_2d
