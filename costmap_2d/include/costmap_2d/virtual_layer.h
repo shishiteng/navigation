@@ -12,7 +12,7 @@
 namespace costmap_2d
 {
 
-class VirtualLayer : public CostmapLayer
+class VirtualLayer : public Layer//CostmapLayer
 {
 public:
   VirtualLayer();
